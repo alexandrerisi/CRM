@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>List Customers</title>
+    <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">-->
     <link type="text/css" media="all" th:href="@{../css/Style.css}" rel="stylesheet">
 </head>
 <body>
@@ -14,13 +15,16 @@
 
 <div id="container">
     <div id="content">
+        <form action="#" th:action="@{/logout}" method="post">
+            <input type="submit" value="Logout" class="add-button"/>
+        </form>
         <input type="button" value="Add Customer" onclick="window.location.href='showFormAdd'; return false;"
                class="add-button"/>
 
         <table>
             <tr>
-                <th>First Name</th>
-                <th>Sur Name</th>
+                <th>Forename</th>
+                <th>Surname</th>
                 <th>Email</th>
                 <th>Action</th>
             </tr>
@@ -31,7 +35,9 @@
                 <td th:text="${customer.email}">
                 <td><a th:href="@{'/customer/showFormForUpdate?customerId=' + ${customer.id}}">Update</a>
                     | <a th:href="@{'/customer/delete?customerId=' + ${customer.id}}"
-                         onclick="if (!confirm('Are you sure you want to remove this customer?')) return false;">Delete</a>
+                         onclick="if (!confirm('Are you sure you want to remove this customer?')) return false;">
+                        Delete
+                    </a>
                 </td>
             </tr>
         </table>
