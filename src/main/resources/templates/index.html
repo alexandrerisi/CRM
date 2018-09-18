@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Hello Spring Security</title>
     <meta charset="utf-8" />
@@ -9,8 +9,9 @@
 
 <h1>Hello Spring Security</h1>
 
-<h3>If you are a Manager or an Admin click on the link</h3>
-
-<a th:href="@{/customer/list}">List of Customers</a>
+<!-- This will only be visible to Managers and Admins. Employers won't see the link.-->
+<div sec:authorize="hasAnyAuthority('ADMIN','MANAGER')">
+    <a th:href="@{/customer/list}">List of Customers</a>
+</div>
 </body>
 </html>

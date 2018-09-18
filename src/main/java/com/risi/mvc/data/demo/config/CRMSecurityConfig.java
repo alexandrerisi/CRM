@@ -1,35 +1,43 @@
 package com.risi.mvc.data.demo.config;
 
+import com.risi.mvc.data.demo.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @EnableWebSecurity
 public class CRMSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    private UserService userService;
+
     @Override // Don't use it in production.
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-
-        User.UserBuilder users = User.withDefaultPasswordEncoder();
-
-        auth.inMemoryAuthentication()
-                .withUser(users.username("john").password("test123").roles("EMPLOYEE"))
-                .withUser(users.username("mary").password("test123").roles("MANAGER"))
-                .withUser(users.username("susan").password("test123").roles("ADMIN"));
+        auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/index").permitAll()
+                .antMatchers("/").hasAuthority("EMPLOYEE")
                 .antMatchers("/customer/**")
-                .hasAnyRole("MANAGER", "ADMIN") //only Manager and Admin are allowed
+                .hasAnyAuthority("MANAGER", "ADMIN")
+                //.hasAnyRole("asd") //only Manager and Admin are allowed
                 .and()
                 .formLogin()
                 .loginPage("/login")
-                .failureUrl("/login-error");
+                .failureUrl("/login-error")
+        .and().exceptionHandling().accessDeniedPage("/access-denied");
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>List Customers</title>
@@ -41,6 +41,13 @@
                 </td>
             </tr>
         </table>
+        <hr>
+        <p>
+            Logged User: <span sec:authentication="name">Bob</span>
+            <br>
+            Roles: <span sec:authentication="principal.authorities">[ROLE_USER, ROLE_ADMIN]</span>
+        </p>
+        <hr>
     </div>
 </div>
 </body>
