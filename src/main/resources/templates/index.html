@@ -11,7 +11,7 @@
 
 <!-- This will only be visible to Managers and Admins. Employers won't see the link.-->
 <div sec:authorize="hasAnyAuthority('ADMIN','MANAGER')">
-    <a th:href="@{/customer/list}">List of Customers</a>
+    <a th:href="@{/customer/list}">List of Customers (Only visible for Managers and Admins)</a>
 </div>
 </body>
 </html>
