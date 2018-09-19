@@ -2,7 +2,6 @@ package com.risi.mvc.data.demo.domain;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -12,7 +11,6 @@ import java.util.Set;
 @Entity
 @Data
 @NoArgsConstructor
-@ToString(exclude = "users")
 public class Authority implements GrantedAuthority {
 
     @Id
@@ -28,6 +26,11 @@ public class Authority implements GrantedAuthority {
 
     @Override
     public String getAuthority() {
+        return authority;
+    }
+
+    @Override
+    public String toString() {
         return authority;
     }
 }
