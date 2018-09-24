@@ -3,7 +3,6 @@ package com.risi.mvc.data.demo;
 import com.risi.mvc.data.demo.domain.Authority;
 import com.risi.mvc.data.demo.domain.Customer;
 import com.risi.mvc.data.demo.domain.User;
-import com.risi.mvc.data.demo.repository.AuthorityRepository;
 import com.risi.mvc.data.demo.repository.CustomerRepository;
 import com.risi.mvc.data.demo.service.UserService;
 import org.springframework.boot.CommandLineRunner;

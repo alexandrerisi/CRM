@@ -17,7 +17,7 @@ public class Authority implements GrantedAuthority {
     @GeneratedValue
     private int id;
     private String authority;
-    @ManyToMany //(targetEntity = User.class)
+    @ManyToMany
     private Set<User> users = new HashSet<>();
 
     public Authority(String authority) {

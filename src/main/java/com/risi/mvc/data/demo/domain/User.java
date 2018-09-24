@@ -24,6 +24,8 @@ public class User implements UserDetails {
     private int id;
     private String username;
     private String password;
+    private String country = "UK";
+    private String city = "Manchester";
     private boolean enabled = true;
     private boolean credentialsNonExpired = true;
     private boolean accountNonLocked = true;

@@ -9,6 +9,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.RegexRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
+
+import javax.servlet.http.HttpServletRequest;
 
 @EnableWebSecurity
 public class CRMSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -23,7 +27,20 @@ public class CRMSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
+        RequestMatcher csrfRequestMatcher = new RequestMatcher() {
+
+            private RegexRequestMatcher matcher = new RegexRequestMatcher("^(?!/api/)", null);
+
+            @Override
+            public boolean matches(HttpServletRequest request) {
+                return matcher.matches(request);
+            }
+        };
+
         http
+                .csrf().requireCsrfProtectionMatcher(csrfRequestMatcher) // disable csrf for rest api
+                .and()
                 .authorizeRequests()
                 .antMatchers("/").hasAuthority("EMPLOYEE")
                 .antMatchers("/customer/**")

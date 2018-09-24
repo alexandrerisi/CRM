@@ -27,11 +27,23 @@ public class CustomerService {
         return customerRepository.findById(id);
     }
 
-    public void saveCustomer(Customer customer) {
-        customerRepository.save(customer);
+    public Customer saveCustomer(Customer customer) {
+        return customerRepository.save(customer);
     }
 
     public void deleteCustomer(int id) {
         customerRepository.deleteById(id);
+    }
+
+    public Collection<Customer> getAllCustomers() {
+        return customerRepository.findAllByOrderBySurNameAsc();
+    }
+
+    public Optional<Customer> getCustomerByEmail(String email) {
+        return customerRepository.findByEmail(email);
+    }
+
+    public Optional<Customer> getCustomerById(int id) {
+        return customerRepository.findById(id);
     }
 }
