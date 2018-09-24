@@ -45,12 +45,11 @@ public class CRMSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").hasAuthority("EMPLOYEE")
                 .antMatchers("/customer/**")
                 .hasAnyAuthority("MANAGER", "ADMIN")
-                //.hasAnyRole("asd") //only Manager and Admin are allowed
                 .and()
                 .formLogin()
                 .loginPage("/login")
                 .failureUrl("/login-error")
-        .and().exceptionHandling().accessDeniedPage("/access-denied");
+                .and().exceptionHandling().accessDeniedPage("/access-denied");
     }
 
     @Bean

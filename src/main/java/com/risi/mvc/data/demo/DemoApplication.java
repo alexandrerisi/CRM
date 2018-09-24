@@ -25,7 +25,7 @@ public class DemoApplication {
             customerRepo.save(new Customer("David", "Adams", "david@luv2code.com"));
             customerRepo.save(new Customer("John", "Doe", "john@luv2code.com"));
             customerRepo.save(new Customer("Ajay", "Rao", "ajay@luv2code.com"));
-            customerRepo.save(new Customer("Mary", "Public", "marry@luv2code.com"));
+            customerRepo.save(new Customer("Mary", "Public", "mary@luv2code.com"));
             customerRepo.save(new Customer("Maxwell", "Dixon", "max@luv2code.com"));
 
             User john = new User("john", "test123");

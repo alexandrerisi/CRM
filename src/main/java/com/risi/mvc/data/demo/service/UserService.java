@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -43,6 +44,16 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepo.findByUsername(username);
+        Optional<User> user = userRepo.findByUsername(username);
+        if (!user.isPresent())
+            throw new UsernameNotFoundException("User " + username + " not found.");
+        return user.get();
+    }
+
+    public User restAuthentication(String username, String password) {
+        Optional<User> user = userRepo.findByUsername(username);
+        if (!user.isPresent() || !passwordEncoder.matches(password, user.get().getPassword()))
+            throw new UsernameNotFoundException("User " + username + " not found.");
+        return user.get();
     }
 }

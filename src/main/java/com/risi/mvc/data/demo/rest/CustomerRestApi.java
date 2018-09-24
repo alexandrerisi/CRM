@@ -2,6 +2,7 @@ package com.risi.mvc.data.demo.rest;
 
 import com.risi.mvc.data.demo.domain.Customer;
 import com.risi.mvc.data.demo.exception.CustomerNotFoundException;
+import com.risi.mvc.data.demo.rest.authorisation.JwtService;
 import com.risi.mvc.data.demo.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,8 @@ public class CustomerRestApi {
 
     @Autowired
     private CustomerService customerService;
+    @Autowired
+    private JwtService jwtService;
 
     @GetMapping
     public Collection<Customer> exportCustomers() {
@@ -53,5 +56,10 @@ public class CustomerRestApi {
         else
             throw new CustomerNotFoundException("Customer not found. " + customer);
         return customer.get();
+    }
+
+    @GetMapping("{username}/password/{password}")
+    public String getToken(@PathVariable String username, @PathVariable String password) {
+        return jwtService.restAuthentication(username, password);
     }
 }
