@@ -1,6 +1,7 @@
 package com.risi.mvc.data.demo.rest;
 
 import com.risi.mvc.data.demo.exception.CustomerNotFoundException;
+import com.risi.mvc.data.demo.exception.InsufficientPermissionException;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,14 @@ import java.time.LocalDateTime;
 
 @ControllerAdvice // AOP
 public class RestExceptionHandler {
+
+    @ExceptionHandler
+    public ResponseEntity<RestErrorResponse> handleException(InsufficientPermissionException exc) {
+        RestErrorResponse error = new RestErrorResponse();
+        error.setStatus(HttpStatus.UNAUTHORIZED.value());
+        error.setMessage(exc.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
+    }
 
     @ExceptionHandler
     public ResponseEntity<RestErrorResponse> handleException(Exception e) {
