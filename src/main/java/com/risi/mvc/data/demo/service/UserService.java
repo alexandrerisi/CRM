@@ -32,11 +32,11 @@ public class UserService implements UserDetailsService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         Set<Authority> roles = new HashSet<>();
         for (GrantedAuthority role : user.getAuthorities()) {
-            Authority authority = authorityRepo.findByAuthority(role.getAuthority());
-            if (authority == null)
+            Optional<Authority> authority = authorityRepo.findByAuthority(role.getAuthority());
+            if (!authority.isPresent())
                 roles.add((Authority) role);
             else
-                roles.add(authority);
+                roles.add(authority.get());
         }
         user.setAuthorities(roles);
         userRepo.save(user);
