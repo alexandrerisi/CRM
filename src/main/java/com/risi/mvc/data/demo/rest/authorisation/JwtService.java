@@ -20,8 +20,10 @@ public class JwtService {
     private Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     @Autowired
     private UserService userService;
+    @Autowired
+    private TokenCacheService tokenCacheService;
 
-    private String generateToken(User user) {
+    private synchronized String generateToken(User user) {
 
         Map<String, Object> claims = new HashMap<>();
         claims.put("country", user.getCountry());
@@ -33,11 +35,14 @@ public class JwtService {
         claims.put("id", user.getId());
         claims.put("authorities", user.getAuthorities());
 
-        return Jwts.builder().setClaims(claims)
+        String token = Jwts.builder().setClaims(claims)
                 .setSubject(user.getUsername())
                 .setExpiration(new Date(System.currentTimeMillis() + 7200000)) // two hours.
                 .signWith(key)
                 .compact();
+        tokenCacheService.addToken(token, user.getUsername());
+
+        return token;
     }
 
     public String restAuthentication(String username, String password) {
@@ -64,5 +69,13 @@ public class JwtService {
             user.addAuthority(authority);
         }
         return user;
+    }
+
+    public boolean isValidToken(String token) {
+        return tokenCacheService.isValidToken(token);
+    }
+
+    public void deleteUserToken(String username) {
+        tokenCacheService.deleteToken(username);
     }
 }

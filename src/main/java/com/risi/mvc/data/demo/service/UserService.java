@@ -51,9 +51,21 @@ public class UserService implements UserDetailsService {
     }
 
     public User restAuthentication(String username, String password) {
-        Optional<User> user = userRepo.findByUsername(username);
-        if (!user.isPresent() || !passwordEncoder.matches(password, user.get().getPassword()))
+        User user = getUserByUsername(username);
+        if (!passwordEncoder.matches(password, user.getPassword()))
             throw new UsernameNotFoundException("User " + username + " not found.");
-        return user.get();
+        return user;
+    }
+
+    public User getUserByUsername(String username) {
+        Optional<User> user = userRepo.findByUsername(username);
+        if (user.isPresent())
+            return user.get();
+        else
+            throw new UsernameNotFoundException("User " + username + " not found.");
+    }
+
+    public void deleteUser(User user) {
+        userRepo.delete(user);
     }
 }
