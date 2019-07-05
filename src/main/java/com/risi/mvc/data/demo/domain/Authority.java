@@ -1,7 +1,6 @@
 package com.risi.mvc.data.demo.domain;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -9,7 +8,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class Authority implements GrantedAuthority {
 
@@ -17,7 +17,7 @@ public class Authority implements GrantedAuthority {
     @GeneratedValue
     private int id;
     private String authority;
-    @ManyToMany
+    @ManyToMany(mappedBy = "authorities")
     private Set<User> users = new HashSet<>();
 
     public Authority(String authority) {

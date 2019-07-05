@@ -37,7 +37,7 @@ public class CRMSecurityConfig extends WebSecurityConfigurerAdapter {
                 return matcher.matches(request);
             }
         };
-
+        http.headers().frameOptions().sameOrigin();
         http
                 .csrf().requireCsrfProtectionMatcher(csrfRequestMatcher) // disable csrf for rest api
                 .and()

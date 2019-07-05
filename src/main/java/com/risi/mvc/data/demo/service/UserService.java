@@ -33,7 +33,7 @@ public class UserService implements UserDetailsService {
         Set<Authority> roles = new HashSet<>();
         for (GrantedAuthority role : user.getAuthorities()) {
             Optional<Authority> authority = authorityRepo.findByAuthority(role.getAuthority());
-            if (!authority.isPresent())
+            if (authority.isEmpty())
                 roles.add((Authority) role);
             else
                 roles.add(authority.get());
@@ -45,7 +45,7 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> user = userRepo.findByUsername(username);
-        if (!user.isPresent())
+        if (user.isEmpty())
             throw new UsernameNotFoundException("User " + username + " not found.");
         return user.get();
     }

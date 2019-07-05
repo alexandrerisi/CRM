@@ -1,9 +1,6 @@
 package com.risi.mvc.data.demo.domain;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -13,16 +10,19 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
+@RequiredArgsConstructor
 @ToString(exclude = "authorities")
-@EqualsAndHashCode
 public class User implements UserDetails {
 
     @Id
     @GeneratedValue
     private int id;
+    @NonNull
     private String username;
+    @NonNull
     private String password;
     private String country = "UK";
     private String city = "Manchester";
@@ -34,12 +34,7 @@ public class User implements UserDetails {
             CascadeType.PERSIST,
             CascadeType.DETACH,
             CascadeType.REFRESH}, fetch = FetchType.EAGER)
-    private Set<Authority> authorities = new HashSet<>();
-
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
+    private Set<Authority> authorities;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -47,6 +42,8 @@ public class User implements UserDetails {
     }
 
     public void addAuthority(Authority role) {
+        if (authorities == null)
+            authorities = new HashSet<>();
         authorities.add(role);
     }
 }

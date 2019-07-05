@@ -40,7 +40,7 @@ public class CustomerRestApi {
             throws CustomerNotFoundException, InvalidTokenException, InsufficientPermissionException {
 
         Optional<Customer> customer = customerService.getCustomerByEmail(email);
-        if (!customer.isPresent())
+        if (customer.isEmpty())
             throw new CustomerNotFoundException("No customer with email -> " + email);
         return customer.get();
     }

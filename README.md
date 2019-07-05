@@ -7,6 +7,6 @@ Technologies:
 - SpringData
 - Spring Security
 - Spring AOP
-- Thymeleag
+- Thymeleaf
 - Lombok
 - H2
