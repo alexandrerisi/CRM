@@ -3,6 +3,7 @@ package com.risi.mvc.data.demo.rest.authorisation;
 import com.risi.mvc.data.demo.domain.User;
 import com.risi.mvc.data.demo.exception.InsufficientPermissionException;
 import com.risi.mvc.data.demo.exception.InvalidTokenException;
+import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -14,10 +15,10 @@ import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
+@RequiredArgsConstructor
 public class CRMRestAuthorisationAspect {
 
-    @Autowired
-    private JwtService jwtService;
+    private final JwtService jwtService;
 
     @Pointcut("execution(* com.risi.mvc.data.demo.rest.CustomerRestApi.getToken(..))")
     private void forRestGetToken() {

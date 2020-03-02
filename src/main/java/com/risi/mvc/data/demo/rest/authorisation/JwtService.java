@@ -8,6 +8,7 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,17 +16,16 @@ import java.security.Key;
 import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class JwtService {
 
     private Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private TokenCacheService tokenCacheService;
+    private final UserService userService;
+    private final TokenCacheService tokenCacheService;
 
     private synchronized String generateToken(User user) {
 
-        Map<String, Object> claims = new HashMap<>();
+        var claims = new HashMap<String, Object>();
         claims.put("country", user.getCountry());
         claims.put("city", user.getCity());
         claims.put("enabled", user.isEnabled());
@@ -35,7 +35,7 @@ public class JwtService {
         claims.put("id", user.getId());
         claims.put("authorities", user.getAuthorities());
 
-        String token = Jwts.builder().setClaims(claims)
+        var token = Jwts.builder().setClaims(claims)
                 .setSubject(user.getUsername())
                 .setExpiration(new Date(System.currentTimeMillis() + 7200000)) // two hours.
                 .signWith(key)
@@ -51,9 +51,9 @@ public class JwtService {
 
     User getUserFromToken(String token) {
 
-        Jws<Claims> col = Jwts.parser().setSigningKey(key).parseClaimsJws(token);
+        Jws<Claims> col = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
         Claims claims = col.getBody();
-        User user = new User();
+        var user = new User();
         user.setId(claims.get("id", Integer.class));
         user.setUsername(claims.get("sub", String.class));
         user.setCountry(claims.get("country", String.class));
@@ -62,9 +62,9 @@ public class JwtService {
         user.setCredentialsNonExpired(claims.get("credentialsNonExpired", Boolean.class));
         user.setAccountNonLocked(claims.get("accountNonLocked", Boolean.class));
         user.setAccountNonExpired(claims.get("accountNonExpired", Boolean.class));
-        List list = (ArrayList) claims.get("authorities");
+        var list = (ArrayList) claims.get("authorities");
         for (Object object : list) {
-            Authority authority = new Authority();
+            var authority = new Authority();
             authority.setAuthority(((Map) object).get("authority").toString());
             user.addAuthority(authority);
         }

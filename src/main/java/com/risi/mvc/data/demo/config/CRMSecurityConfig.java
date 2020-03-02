@@ -1,6 +1,7 @@
 package com.risi.mvc.data.demo.config;
 
 import com.risi.mvc.data.demo.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -15,6 +16,7 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 import javax.servlet.http.HttpServletRequest;
 
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class CRMSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired

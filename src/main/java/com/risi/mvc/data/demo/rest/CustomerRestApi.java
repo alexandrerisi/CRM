@@ -9,6 +9,7 @@ import com.risi.mvc.data.demo.exception.TokenNotFoundException;
 import com.risi.mvc.data.demo.rest.authorisation.JwtService;
 import com.risi.mvc.data.demo.service.CustomerService;
 import com.risi.mvc.data.demo.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
@@ -17,15 +18,13 @@ import java.util.Collection;
 import java.util.Optional;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/customers")
 public class CustomerRestApi {
 
-    @Autowired
-    private CustomerService customerService;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private JwtService jwtService;
+    private final CustomerService customerService;
+    private final UserService userService;
+    private final JwtService jwtService;
 
     @GetMapping
     public Collection<Customer> getCustomers(@RequestParam String token)
